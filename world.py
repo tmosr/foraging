@@ -27,7 +27,6 @@ class World:
             int(rand()*self.size), food_size, \
             npp, max_food, self.grid) for _ in range(n_food)]
 
-
     def step(self):
         for h in self.hives:
             h.do_action()
