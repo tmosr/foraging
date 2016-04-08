@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 
+# import project classes
 from food import *
 from hive import *
-from food import *
 
+# import other classes
+from random import random as rand
+import numpy as np
+import matplotlib.pyplot as plt
 
 class World:
     def __init__(self, size):
         self.size = size
-        self.grid = np.array([size, size])
+        self.grid = np.zeros([size, size])
         self.hives = []
         self.food = []
 
@@ -20,8 +24,14 @@ class World:
     def create_food(self, n_food, food_size):
         # create food x,y,n,size
         self.food = [Food(int(rand()*self.size), \
-            int(rand()*self.size)) for _ in range(n)]
+            int(rand()*self.size), self.grid) for _ in range(n)]
 
+
+    def step(self):
+        for h in self.hives:
+            h.do_action()
+        for f in self.food:
+            f.do_action()
 
 size = 1000
 n_food = 20
