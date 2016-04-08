@@ -21,10 +21,11 @@ class World:
         self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid) for _ in range(n_hive)]
 
-    def create_food(self, n_food, food_size):
+    def create_food(self, n_food, food_size, npp, max_food):
         # create food x,y,n,size
         self.food = [Food(int(rand()*self.size), \
-            int(rand()*self.size), self.grid) for _ in range(n)]
+            int(rand()*self.size), food_size, \
+            npp, max_food, self.grid) for _ in range(n_food)]
 
 
     def step(self):
