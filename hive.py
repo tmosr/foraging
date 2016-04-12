@@ -49,6 +49,7 @@ class Hive:
 
     def assign_mu(self, bee):
         r = rand()
+        print self.mu_bins
         mus = self.mu_bins[np.where(self.mu_scores < r)]
         new_mu = mus[0]
 
