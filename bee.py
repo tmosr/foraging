@@ -17,6 +17,7 @@ class Bee:
         self.food = 0
 
         self.grid = grid
+        self.size = self.grid.shape[0]
 
         self.min_dist = 1
         self.capacity = 10
@@ -42,16 +43,16 @@ class Bee:
 
     def look_around(self):     
         pos = []
-        for x in range(self.grid.shape[0]):
-            for y in range(self.grid.shape[0]):
+        for x in range(self.size):
+            for y in range(self.size):
                 if x**2 + y**2 < self.rv**2:
                     for p in pos:
                         if self.grid[p] >= 1:
                             pos.append((x,y))
         if len(pos) >= 1:
             shuffle(pos)
-            self.x = pos[0] % SIZE
-            self.y = pos[1] % SIZE
+            self.x = pos[0] % self.size
+            self.y = pos[1] % self.size
 
             
     def move(self):
@@ -65,8 +66,8 @@ class Bee:
             self.reorientate()
 
         else:
-            self.x += cos(self.angle) % SIZE
-            self.y += sin(self.angle) % SIZE
+            self.x += cos(self.angle) % self.size
+            self.y += sin(self.angle) % self.size
             self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
 
     def reorientate(self):
