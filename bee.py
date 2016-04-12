@@ -42,16 +42,16 @@ class Bee:
 
     def look_around(self):     
         pos = []
-        for x in range(grid_size):
-            for y in range(grid_size):
+        for x in range(self.grid.shape[0]):
+            for y in range(self.grid.shape[0]):
                 if x**2 + y**2 < rv**2:
                     for p in pos:
-                        if grid[p] >= 1:
+                        if self.grid[p] >= 1:
                             pos.append((x,y))
         if len(pos) >= 1:
             shuffle(pos)
-            self.x = pos[0].x % SIZE
-            self.y = pos[0].y % SIZE
+            self.x = pos[0] % SIZE
+            self.y = pos[1] % SIZE
 
             
     def move(self):
