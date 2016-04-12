@@ -45,8 +45,8 @@ class Hive:
 
     def collect(self, bee):
         if bee.x == self.x and bee.y == self.y:
-            self.food += bee.food
-            bee.food = 0
+            self.food += bee.load
+            bee.load = 0
             self.mus.append([self.mu_counter, bee.mu])
 
             if len(self.mu_bins) > 0:
