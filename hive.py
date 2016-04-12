@@ -28,14 +28,19 @@ class Hive:
         self.memory = 1000
 
     def do_action(self):
-        if len(self.mus) > 0:
-            self.calculate_mus()
+        try:
 
-        for bee in self.bees:
-            bee.do_actions()
-            self.collect(bee)
+            if len(self.mus) > 0:
+                self.calculate_mus()
 
-        self.mu_counter += 1
+            for bee in self.bees:
+                bee.do_actions()
+                self.collect(bee)
+
+            self.mu_counter += 1
+
+        except OverflowError:
+            print("OverflowError")
 
 
     def collect(self, bee):

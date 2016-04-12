@@ -59,7 +59,8 @@ for i in range(start, stop):
     field.clear()
     field.set_aspect('equal')
     field.axis([0, size, 0, size])
-    field.imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food)
+    field.imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+            interpolation='nearest')
 
     for i in range(len(w.hives)):
         hive = w.hives[i]

@@ -8,9 +8,9 @@ from math import *
 
 class Bee:
     def __init__(self, x, y, mu, grid):
-        self.x = x 
-        self.y = x 
-        
+        self.x = x
+        self.y = x
+
         self.x_hive = x
         self.y_hive = y
 
@@ -41,7 +41,7 @@ class Bee:
         self.move()
         self.collect()
 
-    def look_around(self):     
+    def look_around(self):
         pos = []
         for x in range(self.size):
             for y in range(self.size):
@@ -54,7 +54,7 @@ class Bee:
             self.x = pos[0] % self.size
             self.y = pos[1] % self.size
 
-            
+
     def move(self):
         if self.grid[self.x][self.y] >=1:
             self.cd = 0
