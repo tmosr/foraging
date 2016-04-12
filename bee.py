@@ -44,7 +44,7 @@ class Bee:
         pos = []
         for x in range(self.grid.shape[0]):
             for y in range(self.grid.shape[0]):
-                if x**2 + y**2 < rv**2:
+                if x**2 + y**2 < self.rv**2:
                     for p in pos:
                         if self.grid[p] >= 1:
                             pos.append((x,y))
