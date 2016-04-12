@@ -13,6 +13,8 @@ class Bee:
         self.x_hive = x
         self.y_hive = y
 
+        self.food = 0
+
         self.grid = grid
 
         self.min_dist = 1
@@ -41,8 +43,9 @@ class Bee:
         self.collect()
 
     def look_for_food(self):
-        pass
-        upleft= food[self.x-1][self.y+1]
+        food = self.grid
+
+        upleft = food[self.x-1][self.y+1]
         upmid = food[self.x][self.y+1]
         upright = food[self.x+1][self.y+1]
 
@@ -82,7 +85,7 @@ class Bee:
                 self.y -= 1
 
     def move(self):
-        if food[self.x][self.y] >=1:
+        if self.grid[self.x][self.y] >=1:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
@@ -94,15 +97,15 @@ class Bee:
         else:
             self.x += cos(self.angle)
             self.y += sin(self.angle)
-            self.cd += sqrt(cos(self.anlge)**2+sin(self.angle)**2)
+            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
 
-    def reorientate():
+    def reorientate(self):
         self.compute_a()
         self.angle = self.compute_angle()
         self.move()
 
     def collect(self):
-        if food[self.x][self.y] >=1:
+        if self.grid[self.x][self.y] >=1:
             self.load += 1
             if self.load >= self.capacity:
                 self.x = self.x_hive

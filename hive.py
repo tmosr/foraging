@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from hive import *
+from bee import *
 from random import random as rand
 import numpy as np
 
@@ -19,18 +20,20 @@ class Hive:
         self.food_count = 0
         self.mu_counter = 0
 
+        self.food = 0
+
         # how long to remember mus
         self.memory = 100
 
     def do_action(self):
-        self.calculate_mus()
+        if len(self.mus) > 0:
+            self.calculate_mus()
 
         for bee in self.bees:
-            bee.do_action()
-            self.mus.append(bee.mu)
+            bee.do_actions()
             self.collect(bee)
 
-        self.m_counter += 1
+        self.mu_counter += 1
 
 
     def collect(self, bee):
@@ -53,6 +56,7 @@ class Hive:
         i = 0
         while i < len(self.mus):
             m = self.mus[i]
+            print self.mus
             if m[0] < (self.mu_counter - max_age):
                 self.mus.remove(m)
             else:

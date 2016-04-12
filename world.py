@@ -33,12 +33,15 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 1000
+size = 100
 n_food = 20
+n_hive = 1
 food_size = 10
+npp = 1
+max_food = 1.1
 
 tot_n_bees = 200
-n_hives = 10
+n_hives = 2
 n_bees = tot_n_bees/n_hives
 
 w = World(size)
@@ -46,7 +49,23 @@ start = 0
 stop = 100000
 
 w.create_hive(n_hives, n_bees)
-w.create_food(n_food, food_size)
+w.create_food(n_food, food_size, npp, max_food)
+
+fg, field = plt.subplots(1,1)
 
 for i in range(start, stop):
     w.step()
+
+    field.clear()
+    field.imshow(w.grid.T)
+    for i in range(len(w.hives)):
+        hive = w.hives[i]
+        bees = hive.bees
+
+        field.plot(hive.x, hive.y, 'k.')
+        field.scatter([b.x for b in bees], [b.y for b in bees], \
+                cmap = 'Paired', vmin=0, vmax=n_hives, \
+                c=[i for _ in range(len(bees))])
+
+    plt.draw()
+    plt.pause(0.1)
