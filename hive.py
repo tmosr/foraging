@@ -49,7 +49,7 @@ class Hive:
 
     def assign_mu(self, bee):
         r = rand()
-        mus = self.mu_bins[p.where(self.mu_scores < r)]
+        mus = self.mu_bins[np.where(self.mu_scores < r)]
         new_mu = mus[0]
 
         bee.mu = new_mu
