@@ -42,7 +42,7 @@ max_food = 1.1
 
 tot_n_bees = 200
 n_hives = 2
-n_bees = tot_n_bees/n_hives
+n_bees = int(tot_n_bees/n_hives)
 
 w = World(size)
 start = 0
