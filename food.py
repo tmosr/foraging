@@ -13,6 +13,16 @@ class Food:
 
         self.food_size = food_size
 
+    def initiate_food(self):
+        x_size, y_size = self.grid.shape
+        y_min = (self.y - offset) % y_size
+        y_max = (self.y + offset) % y_size
+
+        x_min = (self.x - offset) % x_size
+        x_max = (self.x + offset) % x_size
+
+        self.grid[x_min:x_max,y_min:y_max] += self.max_food
+
     def do_action(self):
         self.grow()
 
