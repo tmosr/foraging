@@ -25,7 +25,7 @@ class Hive:
 
 
         # how long to remember mus
-        self.memory = 100
+        self.memory = 1000
 
     def do_action(self):
         if len(self.mus) > 0:
@@ -48,12 +48,13 @@ class Hive:
                 self.assign_mu(bee)
 
     def assign_mu(self, bee):
-        mus = []
-        while len(mus) == 0:
-            r = rand()
-            mus = self.mu_bins[np.where(self.mu_scores < r)]
+        r = rand()
+        mus = self.mu_bins[np.where(self.mu_scores < r)]
+        if len(mus) == 0:
+            new_mu = rand()*2 + 1
+        else:
+            new_mu = mus[0]
 
-        new_mu = mus[0]
         bee.mu = new_mu
 
     def discard_mus(self, max_age):
