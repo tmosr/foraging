@@ -56,7 +56,7 @@ class Hive:
         i = 0
         while i < len(self.mus):
             m = self.mus[i]
-            print self.mus
+            print(self.mus)
             if m[0] < (self.mu_counter - max_age):
                 self.mus.remove(m)
             else:
