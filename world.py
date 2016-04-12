@@ -34,7 +34,7 @@ class World:
             f.do_action()
 
 size = 100
-n_food = 20
+n_food = 10
 n_hive = 1
 food_size = 10
 npp = 1
