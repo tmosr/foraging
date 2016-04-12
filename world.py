@@ -19,7 +19,7 @@ class World:
     def create_hive(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
         self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
-                n_bees, size, self.grid) for _ in range(n_hive)]
+                n_bees, size, self.grid) for _ in range(n_hives)]
 
     def create_food(self, n_food, food_size, npp, max_food):
         # create food x,y,n,size
