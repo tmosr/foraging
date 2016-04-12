@@ -44,21 +44,22 @@ class Hive:
             bee.food = 0
             self.mus.append([self.mu_counter, bee.mu])
 
-            if len(self.mus) > 0:
+            if len(self.mu_bins) > 0:
                 self.assign_mu(bee)
 
     def assign_mu(self, bee):
-        r = rand()
-        mus = self.mu_bins[np.where(self.mu_scores < r)]
-        new_mu = mus[0]
+        mus = []
+        while len(mus) == 0:
+            r = rand()
+            mus = self.mu_bins[np.where(self.mu_scores < r)]
 
+        new_mu = mus[0]
         bee.mu = new_mu
 
     def discard_mus(self, max_age):
         i = 0
         while i < len(self.mus):
             m = self.mus[i]
-            print(self.mus)
             if m[0] < (self.mu_counter - max_age):
                 self.mus.remove(m)
             else:
@@ -68,7 +69,7 @@ class Hive:
         # discard mus older than 100
         self.discard_mus(self.memory)
         # create 100 bins
-        self.mu_bins = np.linspace(min(self.mus),max(self.mus), 100)
+        self.mu_bins = np.linspace(np.amin(self.mus),np.amax(self.mus), 100)
         # create scores
-        self.mu_scores = np.histogram(self.mus, bins, weights=self.mus)[0] / \
-                np.histogram(data, bins)[0]
+        self.mu_scores = np.histogram(self.mus, self.mu_bins, weights=self.mus)[0] / \
+                np.histogram(self.mus, self.mu_bins)[0]

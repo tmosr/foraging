@@ -57,6 +57,8 @@ for i in range(start, stop):
     w.step()
 
     field.clear()
+    field.set_aspect('equal')
+    field.axis([0, size, 0, size])
     field.imshow(w.grid.T)
     for i in range(len(w.hives)):
         hive = w.hives[i]
