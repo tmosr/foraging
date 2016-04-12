@@ -6,49 +6,56 @@ import numpy as np
 from math import *
 
 class Bee:
-    def __init__(self,x,y,mu):
-        self.x = X
-        self.y = y
-        self.capacity = CAPA
+    def __init__(self, x, y, mu, grid):
+        self.x = x
+        self.y = x
+
+        self.x_hive = x
+        self.y_hive = y
+
+        self.grid = grid
+
+        self.min_dist = 1
+        self.capacity = 10
         self.load = 0
-        self.rv = rvision
-        self.mu = 1 + rand()*4
-        self.ad = compute_a()
-        self.angle = compute_angle()
+        self.rv = 1
+        self.mu = mu
+        self.ad = self.compute_a()
+        self.angle = self.compute_angle()
         self.cd = 0
-    
+
     def compute_a(self):
-        a_ok = FALSE
+        a_ok = False
         while not a_ok:
-            a = min_dist*rand()**(-1/(rand()*2))
-            a_ok = a >= min_dist
+            a = self.min_dist*rand()**(-1/(rand()*2))
+            a_ok = a >= self.min_dist
         return a
-        
+
     def compute_angle(self):
         angle = rand()*2*pi
         return angle
-    
+
     def do_actions(self):
         self.look_for_food()
         self.move()
         self.collect()
-    
+
     def look_for_food(self):
         pass
         upleft= food[self.x-1][self.y+1]
         upmid = food[self.x][self.y+1]
         upright = food[self.x+1][self.y+1]
-        
+
         midleft = food[self.x-1][self.y]
         centre = food[self.x][self.y]
         midright = food[self.x+1][self.y]
-        
+
         downleft = food[self.x-1][self.y-1]
         downmid = food[self.x-1][self.y-1]
         downright = food[self.x-1][self.y-1]
-        
+
         near_food = upleft+upmid+upright+midleft+centre+midright+downleft+downmid+downright
-        
+
         if near_food >=1:
             r = rand()
             if r < (centre)/near_food:
@@ -79,32 +86,24 @@ class Bee:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
-            
+
         elif self.cd >= self.ad:
             self.cd = 0
             self.reorientate()
-            
+
         else:
             self.x += cos(self.angle)
             self.y += sin(self.angle)
             self.cd += sqrt(cos(self.anlge)**2+sin(self.angle)**2)
-            
+
     def reorientate():
         self.compute_a()
         self.angle = self.compute_angle()
         self.move()
-        
+
     def collect(self):
         if food[self.x][self.y] >=1:
             self.load += 1
             if self.load >= self.capacity:
-                self.x = x_hive
-                self.y = y_hive
-        
-CAPA = 10
-min_dist = 1
-rvision = 1
-x_hive = 0
-y_hive = 0
-
-
+                self.x = self.x_hive
+                self.y = self.y_hive
