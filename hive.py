@@ -17,10 +17,12 @@ class Hive:
                 for _ in range(n_bees)]
 
         self.mus = []
+        self.mu_scores = []
+        self.mu_bins = []
         self.food_count = 0
         self.mu_counter = 0
-
         self.food = 0
+
 
         # how long to remember mus
         self.memory = 100
@@ -47,7 +49,7 @@ class Hive:
 
     def assign_mu(self, bee):
         r = rand()
-        mus = self.mu_bins[p.where(self.mu_scores < r)]
+        mus = self.mu_bins[np.where(self.mu_scores < r)]
         new_mu = mus[0]
 
         bee.mu = new_mu
@@ -56,7 +58,10 @@ class Hive:
         i = 0
         while i < len(self.mus):
             m = self.mus[i]
+<<<<<<< HEAD
             print(self.mus)
+=======
+>>>>>>> origin/master
             if m[0] < (self.mu_counter - max_age):
                 self.mus.remove(m)
             else:
