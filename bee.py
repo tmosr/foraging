@@ -66,8 +66,8 @@ class Bee:
             self.reorientate()
 
         else:
-            self.x += cos(self.angle) % self.size
-            self.y += sin(self.angle) % self.size
+            self.x = (self.x+cos(self.angle)) % self.size
+            self.y = (self.y + sin(self.angle)) % self.size
             self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
 
     def reorientate(self):
