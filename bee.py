@@ -27,10 +27,7 @@ class Bee:
         self.cd = 0
 
     def compute_a(self):
-        a_ok = False
-        while not a_ok:
-            a = self.min_dist*rand()**(-1/(rand()*2))
-            a_ok = a >= self.min_dist
+        a = self.min_dist*rand()**(-1/(rand()*2))
         return a
 
     def compute_angle(self):
