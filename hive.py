@@ -17,10 +17,12 @@ class Hive:
                 for _ in range(n_bees)]
 
         self.mus = []
+        self.mu_scores = []
+        self.mu_bins = []
         self.food_count = 0
         self.mu_counter = 0
-
         self.food = 0
+
 
         # how long to remember mus
         self.memory = 100
