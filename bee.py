@@ -14,8 +14,6 @@ class Bee:
         self.x_hive = x
         self.y_hive = y
 
-        self.food = 0
-
         self.grid = grid
         self.size = self.grid.shape[0]
 
@@ -81,6 +79,7 @@ class Bee:
 
     def collect(self):
         if self.grid[self.x][self.y] >=1:
+            self.grid[self.x][self.y] -= 1
             self.load += 1
             if self.load >= self.capacity:
                 self.x = self.x_hive
