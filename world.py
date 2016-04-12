@@ -40,7 +40,7 @@ food_size = 10
 npp = 1
 max_food = 1.1
 
-tot_n_bees = 200
+tot_n_bees = 100
 n_hives = 2
 n_bees = int(tot_n_bees/n_hives)
 
@@ -59,7 +59,8 @@ for i in range(start, stop):
     field.clear()
     field.set_aspect('equal')
     field.axis([0, size, 0, size])
-    field.imshow(w.grid.T)
+    field.imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food)
+
     for i in range(len(w.hives)):
         hive = w.hives[i]
         bees = hive.bees
