@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
 from random import random as rand
+from random import shuffle
 import matplotlib.pyplot as plt
 import numpy as np
 from math import *
 
 class Bee:
     def __init__(self, x, y, mu, grid):
-        self.x = x
-        self.y = x
-
+        self.x = x 
+        self.y = x 
+        
         self.x_hive = x
         self.y_hive = y
 
@@ -35,52 +36,24 @@ class Bee:
         return angle
 
     def do_actions(self):
-        self.look_for_food()
+        self.look_around()
         self.move()
         self.collect()
 
-    def look_for_food(self):
-        food = self.grid
+    def look_around(self):     
+        pos = []
+        for x in range(grid_size):
+            for y in range(grid_size):
+                if x**2 + y**2 < rv**2:
+                    for p in pos:
+                        if grid[p] >= 1:
+                            pos.append((x,y))
+        if len(pos) >= 1:
+            shuffle(pos)
+            self.x = pos[0].x % SIZE
+            self.y = pos[0].y % SIZE
 
-        upleft = food[self.x-1][self.y+1]
-        upmid = food[self.x][self.y+1]
-        upright = food[self.x+1][self.y+1]
-
-        midleft = food[self.x-1][self.y]
-        centre = food[self.x][self.y]
-        midright = food[self.x+1][self.y]
-
-        downleft = food[self.x-1][self.y-1]
-        downmid = food[self.x-1][self.y-1]
-        downright = food[self.x-1][self.y-1]
-
-        near_food = upleft+upmid+upright+midleft+centre+midright+downleft+downmid+downright
-
-        if near_food >=1:
-            r = rand()
-            if r < (centre)/near_food:
-                pass
-            elif r < (centre+midleft)/near_food:
-                self.x -= 1
-            elif r < (centre+midleft+midright)/near_food:
-                self.x += 1
-            elif r < (centre+midleft+midright+upleft)/near_food:
-                self.x -= 1
-                self.y += 1
-            elif r < (centre+midleft+midright+upleft+upmid)/near_food:
-                self.y += 1
-            elif r < (centre+midleft+midright+upleft+upmid+upright)/near_food:
-                self.x += 1
-                self.y += 1
-            elif r < (centre+midleft+midright+upleft+upmid+upright+downleft)/near_food:
-                self.x -= 1
-                self.y -= 1
-            elif r < (centre+midleft+midright+upleft+upmid+upright+downleft+downmid)/near_food:
-                self.y -= 1
-            elif r < (centre+midleft+midright+upleft+upmid+upright+downleft+downmid+downright)/near_food:
-                self.x += 1
-                self.y -= 1
-
+            
     def move(self):
         if self.grid[self.x][self.y] >=1:
             self.cd = 0
@@ -92,8 +65,8 @@ class Bee:
             self.reorientate()
 
         else:
-            self.x += cos(self.angle)
-            self.y += sin(self.angle)
+            self.x += cos(self.angle) % SIZE
+            self.y += sin(self.angle) % SIZE
             self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
 
     def reorientate(self):
