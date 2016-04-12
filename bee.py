@@ -9,7 +9,7 @@ from math import *
 class Bee:
     def __init__(self, x, y, mu, grid):
         self.x = x
-        self.y = x
+        self.y = y
 
         self.x_hive = x
         self.y_hive = y

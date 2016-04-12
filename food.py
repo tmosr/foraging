@@ -12,8 +12,10 @@ class Food:
         self.max_food = max_food
 
         self.food_size = food_size
+        self.initiate_food()
 
     def initiate_food(self):
+        offset = int(self.food_size / 2)
         x_size, y_size = self.grid.shape
         y_min = (self.y - offset) % y_size
         y_max = (self.y + offset) % y_size
