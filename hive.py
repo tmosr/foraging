@@ -14,20 +14,24 @@ class Hive:
         self.grid_size = grid_size
         self.grid = grid
 
-        self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
-                for _ in range(n_bees)]
-
-        self.mus = []
         self.directions = []
+        self.mus = []
         self.mu_scores = []
         self.mu_bins = []
         self.food_count = 0
         self.mu_counter = 0
         self.food = 0
 
-
         # how long to remember mus
         self.memory = 1000
+
+        self.init_bees(n_bees)
+
+    def init_bees(self, n_bees):
+        # Normal bees
+        self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
+                for _ in range(n_bees)]
+
 
     def do_action(self):
         try:
@@ -48,13 +52,17 @@ class Hive:
         if bee.x == self.x and bee.y == self.y:
             self.food += bee.load
             bee.load = 0
+            self.load_mu_from(bee)
+
+
+    def load_settings_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
             self.directions.append(bee.message())
 
-            if len(self.mu_bins) > 0:
-                self.assign_mu(bee)
+            self.assign_settings(bee)
 
-    def assign_mu(self, bee):
+    def assign_settings(self, bee):
+        # mu settings
         if len(self.mu_bins) != 0:
             r = rand()
             cum_scores = np.cumsum(self.mu_scores)
@@ -64,16 +72,15 @@ class Hive:
             else:
                 new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
                 new_mu = min(new_mu, 3)
-            
-            if len(self.directions) == 0:
-                bee.angle = bee.compute_angle()
-            else:
-                bee.angle = self.directions.pop
-                
-            #print cum_scores
-            #print self.mu_bins
-            #print r, new_mu
+
             bee.mu = new_mu
+
+        # directions
+        if len(self.directions) == 0:
+            bee.angle = bee.compute_angle()
+        else:
+            bee.angle = self.directions.pop
+
 
     def discard_mus(self, max_age):
         i = 0
