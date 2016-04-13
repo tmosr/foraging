@@ -72,7 +72,7 @@ class Hive:
             else:
                 new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
                 new_mu = min(new_mu, 3)
-        bee.mu = new_mu
+            bee.mu = new_mu
 
         # direction
         if len(self.directions) == 0:
