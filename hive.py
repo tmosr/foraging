@@ -60,7 +60,8 @@ class Hive:
             if len(mus) == 0:
                 new_mu = rand()*2 + 1
             else:
-                new_mu = mus[-1]
+                new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
+                new_mu = min(new_mu, 3)
 
             #print cum_scores
             #print self.mu_bins

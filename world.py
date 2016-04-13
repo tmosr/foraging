@@ -33,14 +33,14 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 50
-n_food = 5
+size = 100
+n_food = 7
 food_size = 6
-npp = 0.1
+npp = 0.01
 max_food = 1.1
 
 tot_n_bees = 50
-n_hives = 1
+n_hives = 2
 n_bees = int(tot_n_bees/n_hives)
 
 w = World(size)
@@ -55,7 +55,7 @@ fg, ax = plt.subplots(1,n_hives + 1)
 for i in range(start, stop):
     w.step()
 
-    if i % 2 == 0:
+    if i % 10 == 0:
         ax[0].clear()
         ax[0].set_aspect('equal')
         ax[0].axis([0, size, 0, size])
@@ -66,14 +66,16 @@ for i in range(start, stop):
             hive = w.hives[j]
             bees = hive.bees
 
-            ax[0].plot(hive.x, hive.y, 'k.')
+            ax[0].plot(hive.x, hive.y, 'ys')
             ax[0].scatter([b.x for b in bees], [b.y for b in bees], \
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
-                    c=[i for _ in range(len(bees))])
+                    c=[j for _ in range(len(bees))])
 
             ax[1+j].clear()
-            ax[1+j].hist([b.mu for b in hive.bees],normed=True)
-            ax[1+j].set_aspect(3./1)
+            n, bins, patches = ax[1+j].hist([b.mu for b in hive.bees],normed=True)
+            ax[1+j].axis([1, 3, min(n), max(n)])
+            ax[1+j].set_aspect(2.\
+                    /float(max(n)-min(n)))
 
         plt.draw()
         plt.pause(0.1)

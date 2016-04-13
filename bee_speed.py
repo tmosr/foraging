@@ -67,8 +67,8 @@ class Bee:
 
         pos = self.look_around()
 
-        self.x = (self.x + dx) % self.size
-        self.y = (self.y + dy) % self.size
+        self.x = int((self.x + dx) % self.size)
+        self.y = int((self.y + dy) % self.size)
 
     def reorientate(self):
         self.ad = self.compute_a()
