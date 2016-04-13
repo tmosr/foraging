@@ -3,6 +3,7 @@
 # import project classes
 from food import *
 from hive import *
+from hive_com import *
 
 # import other classes
 from random import random as rand
@@ -16,9 +17,14 @@ class World:
         self.hives = []
         self.food = []
 
-    def create_hive(self, n_hives, n_bees):
+    def create_hive_stupid(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
         self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
+                n_bees, size, self.grid) for _ in range(n_hives)]
+
+    def create_hive_com(self, n_hives, n_bees):
+        # create hives x,y, n_bees, size, grid
+        self.hives = [HiveCom(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid) for _ in range(n_hives)]
 
     def create_food(self, n_food, food_size, npp, max_food):
@@ -50,7 +56,8 @@ w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive(n_hives, n_bees)
+w.create_hive_intelligent(n_hives, n_bees)
+w.create_hive_stupid(n_hives, n_bees)
 w.create_food(n_food, food_size, npp, max_food)
 
 fg, ax = plt.subplots(1,n_hives + 2)

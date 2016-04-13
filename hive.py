@@ -2,7 +2,6 @@
 
 from hive import *
 from bee import *
-#from bee_speed import *
 from random import random as rand
 import numpy as np
 
@@ -14,7 +13,6 @@ class Hive:
         self.grid_size = grid_size
         self.grid = grid
 
-        self.directions = []
         self.mus = []
         self.mu_scores = []
         self.mu_bins = []
@@ -57,8 +55,6 @@ class Hive:
 
     def load_settings_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
-            self.directions.append(bee.message)
-
             self.assign_settings(bee)
 
     def assign_settings(self, bee):
@@ -73,15 +69,6 @@ class Hive:
                 new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
                 new_mu = min(new_mu, 3)
             bee.mu = new_mu
-
-        # direction
-        if len(self.directions) == 0:
-            new_angle = bee.compute_angle()
-        else:
-            new_angle = self.directions.pop()
-
-        bee.angle = new_angle
-
 
     def discard_mus(self, max_age):
         i = 0
