@@ -49,7 +49,7 @@ class Hive:
             self.food += bee.load
             bee.load = 0
             self.mus.append([self.mu_counter, bee.mu])
-            self.directions.append(bee.message())
+            self.directions.append(bee.message)
 
             if len(self.mu_bins) > 0:
                 self.assign_mu(bee)
@@ -66,14 +66,15 @@ class Hive:
                 new_mu = min(new_mu, 3)
             
             if len(self.directions) == 0:
-                bee.angle = bee.compute_angle()
+                new_angle = bee.compute_angle()
             else:
-                bee.angle = self.directions.pop
+                new_angle = float(self.directions.pop)
                 
             #print cum_scores
             #print self.mu_bins
             #print r, new_mu
             bee.mu = new_mu
+            bee.angle = new_angle
 
     def discard_mus(self, max_age):
         i = 0
