@@ -9,6 +9,8 @@ from hive_com import *
 from random import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as cl
+import matplotlib.cm as cm
 
 class World:
     def __init__(self, size):
@@ -50,18 +52,25 @@ max_food = 1.1
 vs = 10
 vf = 1
 
-tot_n_bees = 50
+tot_n_bees = 100
 n_hives = 2
-n_bees = int(tot_n_bees/n_hives)
+n_bees = int(tot_n_bees/(n_hives*2))
 
 w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_intelligent(1, n_bees)
-w.create_hive_stupid(1, n_bees)
+w.create_hive_intelligent(n_hives/2, n_bees)
+w.create_hive_stupid(n_hives/2, n_bees)
+
 w.create_food(n_food, food_size, npp, max_food)
 
+# color stuff
+cp = plt.get_cmap('Paired')
+cnorm = cl.Normalize(vmin=0, vmax=n_hives)
+scmap = cm.ScalarMappable(norm=cnorm, cmap=cp)
+
+# plot stuff
 fg, ax = plt.subplots(1,n_hives + 2)
 ax[1].clear()
 
@@ -85,12 +94,13 @@ for i in range(start, stop):
                     c=[j for _ in range(len(bees))])
 
             mus = [b.mu for b in hive.bees]
-            ax[1].plot(i, np.mean(mus), 'b.')
+            cval = scmap.to_rgba(j)
+            ax[1].plot(i, np.mean(mus), '.', color=cval)
             ax[1].set_aspect((i+1-start)/2.)
             ax[1].axis([start, i+1, 1, 3])
 
             ax[2+j].clear()
-            n, bins, patches = ax[2+j].hist(mus,normed=True)
+            n, bins, patches = ax[2+j].hist(mus,normed=True, color=cval)
             ax[2+j].axis([1, 3, min(n), max(n)])
             ax[2+j].set_aspect(2.\
                     /float(max(n)-min(n)))
