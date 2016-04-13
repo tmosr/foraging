@@ -57,12 +57,8 @@ class Hive:
 
     def load_settings_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
-<<<<<<< HEAD
-            self.directions.append(bee.message)
-
-=======
             self.directions.append(bee.message())
->>>>>>> origin/master
+
             self.assign_settings(bee)
 
     def assign_settings(self, bee):
@@ -76,27 +72,15 @@ class Hive:
             else:
                 new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
                 new_mu = min(new_mu, 3)
-<<<<<<< HEAD
-            
-            if len(self.directions) == 0:
-                new_angle = bee.compute_angle()
-            else:
-                new_angle = float(self.directions.pop)
-                
-            #print cum_scores
-            #print self.mu_bins
-            #print r, new_mu
-=======
+        bee.mu = new_mu
 
->>>>>>> origin/master
-            bee.mu = new_mu
-            bee.angle = new_angle
-
-        # directions
+        # direction
         if len(self.directions) == 0:
-            bee.angle = bee.compute_angle()
+            new_angle = bee.compute_angle()
         else:
-            bee.angle = self.directions.pop
+            new_angle = float(self.directions.pop)
+
+        bee.angle = new_angle
 
 
     def discard_mus(self, max_age):
