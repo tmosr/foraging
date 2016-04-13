@@ -39,7 +39,6 @@ class Bee:
         return angle
 
     def do_actions(self):
-        self.look_around()
         self.move()
         self.collect()
 
@@ -51,18 +50,18 @@ class Bee:
                     for p in pos:
                         if self.grid[p] >= 1:
                             pos.append((x,y))
-        if len(pos) >= 1:
+     
+    def move(self):
+        self.look_around()
+        
+        if len(pos) >=1:
             shuffle(pos)
             self.x = pos[0] % self.size
             self.y = pos[1] % self.size
-
-
-    def move(self):
-        if self.grid[self.x][self.y] >=1:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
-
+        
         elif self.cd >= self.ad:
             self.cd = 0
             self.reorientate()
@@ -73,7 +72,7 @@ class Bee:
             self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
 
     def reorientate(self):
-        self.compute_a()
+        self.ad = self.compute_a()
         self.angle = self.compute_angle()
         self.move()
 
