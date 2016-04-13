@@ -33,10 +33,10 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 10
-n_food = 100
-food_size = 2
-npp = 1
+size = 50
+n_food = 5
+food_size = 6
+npp = 0.1
 max_food = 1.1
 
 tot_n_bees = 50

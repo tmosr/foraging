@@ -26,7 +26,7 @@ class Hive:
 
 
         # how long to remember mus
-        self.memory = 1000000
+        self.memory = 1000
 
     def do_action(self):
         try:
@@ -55,11 +55,16 @@ class Hive:
     def assign_mu(self, bee):
         if len(self.mu_bins) != 0:
             r = rand()
-            mus = self.mu_bins[np.where(self.mu_scores < r)]
+            cum_scores = np.cumsum(self.mu_scores)
+            mus = self.mu_bins[np.where(cum_scores < r)]
             if len(mus) == 0:
                 new_mu = rand()*2 + 1
             else:
-                new_mu = mus[0]
+                new_mu = mus[-1]
+
+            #print cum_scores
+            #print self.mu_bins
+            #print r, new_mu
             bee.mu = new_mu
 
 
@@ -73,13 +78,13 @@ class Hive:
                 i += 1
 
     def calculate_mus(self):
-        # discard mus older than 100
+        # discard mus older than memory
         self.discard_mus(self.memory)
-        # create 100 bins
         mus = np.array([m[1] for m in self.mus])
+        # create bins
         self.mu_bins = np.linspace(np.amin(mus),np.amax(mus), int(len(mus)/10))
         # create scores
         if len(self.mu_bins) > 0:
             d = np.digitize(mus, self.mu_bins, right=True)
             b = np.bincount(d)
-            self.mu_scores = np.divide(b, float(np.amax(b)))
+            self.mu_scores = np.divide(b, float(np.sum(b)))
