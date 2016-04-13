@@ -2,6 +2,7 @@
 
 from hive import *
 from bee import *
+#from bee_speed import *
 from random import random as rand
 import numpy as np
 
@@ -25,7 +26,7 @@ class Hive:
 
 
         # how long to remember mus
-        self.memory = 1000
+        self.memory = 1000000
 
     def do_action(self):
         try:
@@ -41,7 +42,6 @@ class Hive:
 
         except OverflowError:
             print("OverflowError")
-
 
     def collect(self, bee):
         if bee.x == self.x and bee.y == self.y:

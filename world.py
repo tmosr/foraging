@@ -33,10 +33,10 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 1000
+size = 10
 n_food = 100
-food_size = 5
-npp = 0.001
+food_size = 2
+npp = 1
 max_food = 1.1
 
 tot_n_bees = 50
@@ -55,7 +55,7 @@ fg, ax = plt.subplots(1,n_hives + 1)
 for i in range(start, stop):
     w.step()
 
-    if i % 100:
+    if i % 2 == 0:
         ax[0].clear()
         ax[0].set_aspect('equal')
         ax[0].axis([0, size, 0, size])
