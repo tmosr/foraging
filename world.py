@@ -19,13 +19,15 @@ class World:
 
     def create_hive_stupid(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
-        self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
-                n_bees, size, self.grid) for _ in range(n_hives)]
+        for _ in range(n_hives):
+            self.hives.append(Hive(int(rand()*self.size), int(rand()*self.size),\
+                    n_bees, size, self.grid))
 
     def create_hive_intelligent(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
-        self.hives = [HiveCom(int(rand()*self.size), int(rand()*self.size),\
-                n_bees, size, self.grid) for _ in range(n_hives)]
+        for _ in range(n_hives):
+            self.hives.append(HiveCom(int(rand()*self.size), int(rand()*self.size),\
+                    n_bees, size, self.grid))
 
     def create_food(self, n_food, food_size, npp, max_food):
         # create food x,y,n,size
@@ -49,15 +51,15 @@ vs = 10
 vf = 1
 
 tot_n_bees = 50
-n_hives = 1
+n_hives = 2
 n_bees = int(tot_n_bees/n_hives)
 
 w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_intelligent(n_hives, n_bees)
-w.create_hive_stupid(n_hives, n_bees)
+w.create_hive_intelligent(1, n_bees)
+w.create_hive_stupid(1, n_bees)
 w.create_food(n_food, food_size, npp, max_food)
 
 fg, ax = plt.subplots(1,n_hives + 2)
