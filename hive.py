@@ -3,21 +3,16 @@
 from hive import *
 #from bee import *
 from bee_speed import *
-from bee_mode import *
 from random import random as rand
 import numpy as np
 
 class Hive:
-    def __init__(self, x, y, n_bees, grid_size, grid, vs = 10, vf = 1):
+    def __init__(self, x, y, n_bees, grid_size, grid):
         self.x = x
         self.y = y
 
         self.grid_size = grid_size
         self.grid = grid
-
-        # Normal bees
-        self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
-                for _ in range(n_bees)]
 
         self.mus = []
         self.mu_scores = []
@@ -28,6 +23,14 @@ class Hive:
 
         # how long to remember mus
         self.memory = 1000
+
+        self.init_bees(n_bees)
+
+    def init_bees(self, n_bees):
+        # Normal bees
+        self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
+                for _ in range(n_bees)]
+
 
     def do_action(self):
         try:
@@ -48,6 +51,10 @@ class Hive:
         if bee.x == self.x and bee.y == self.y:
             self.food += bee.load
             bee.load = 0
+            self.load_mu_from(bee)
+
+
+    def load_mu_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
 
             if len(self.mu_bins) > 0:

@@ -58,7 +58,7 @@ fg, ax = plt.subplots(1,n_hives + 1)
 for i in range(start, stop):
     w.step()
 
-    if i % 10 == 0:
+    if i % 1 == 0:
         ax[0].clear()
         ax[0].set_aspect('equal')
         ax[0].axis([0, size, 0, size])
@@ -74,11 +74,11 @@ for i in range(start, stop):
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
                     c=[j for _ in range(len(bees))])
 
-            ax[1+j].clear()
-            n, bins, patches = ax[1+j].hist([b.mu for b in hive.bees],normed=True)
-            ax[1+j].axis([1, 3, min(n), max(n)])
-            ax[1+j].set_aspect(2.\
-                    /float(max(n)-min(n)))
+            #ax[1+j].clear()
+            #n, bins, patches = ax[1+j].hist([b.mu for b in hive.bees],normed=True)
+            #ax[1+j].axis([1, 3, min(n), max(n)])
+            #ax[1+j].set_aspect(2.\
+                    #/float(max(n)-min(n)))
 
         plt.draw()
         plt.pause(0.1)

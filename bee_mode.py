@@ -47,11 +47,11 @@ class BeeMode:
         theta = self.compute_angle()
         dist = self.calc_dist()
 
-        dx = dist*cos(self.theta)
-        dy = dist*sin(self.theta)
+        dx = dist*cos(theta)
+        dy = dist*sin(theta)
 
-        self.x = int((self.x + dx) % self.size)
-        self.y = int((self.y + dy) % self.size)
+        self.x = round(self.x + dx) % self.size
+        self.y = round(self.y + dy) % self.size
 
     def collect(self):
         if self.grid[self.x][self.y] >=1:
