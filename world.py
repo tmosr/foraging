@@ -22,7 +22,7 @@ class World:
         self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid) for _ in range(n_hives)]
 
-    def create_hive_com(self, n_hives, n_bees):
+    def create_hive_intelligent(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
         self.hives = [HiveCom(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid) for _ in range(n_hives)]
