@@ -53,7 +53,8 @@ stop = 100000
 w.create_hive(n_hives, n_bees)
 w.create_food(n_food, food_size, npp, max_food)
 
-fg, ax = plt.subplots(1,n_hives + 1)
+fg, ax = plt.subplots(1,n_hives + 2)
+ax[1].clear()
 
 for i in range(start, stop):
     w.step()
@@ -74,10 +75,15 @@ for i in range(start, stop):
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
                     c=[j for _ in range(len(bees))])
 
-            ax[1+j].clear()
-            n, bins, patches = ax[1+j].hist([b.mu for b in hive.bees],normed=True)
-            ax[1+j].axis([1, 3, min(n), max(n)])
-            ax[1+j].set_aspect(2.\
+            mus = [b.mu for b in hive.bees]
+            ax[1].plot(i, np.mean(mus), 'b.')
+            ax[1].set_aspect((i+1-start)/2.)
+            ax[1].axis([start, i+1, 1, 3])
+
+            ax[2+j].clear()
+            n, bins, patches = ax[2+j].hist(mus,normed=True)
+            ax[2+j].axis([1, 3, min(n), max(n)])
+            ax[2+j].set_aspect(2.\
                     /float(max(n)-min(n)))
 
         plt.draw()
