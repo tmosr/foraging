@@ -1,30 +1,30 @@
 #!/usr/bin/env python
 
 from hive import *
-from bee import *
-#from bee_speed import *
+#from bee import *
+from bee_speed import *
+from bee_mode import *
 from random import random as rand
 import numpy as np
 
 class Hive:
-    def __init__(self, x, y, n_bees, grid_size, grid):
+    def __init__(self, x, y, n_bees, grid_size, grid, vs = 10, vf = 1):
         self.x = x
         self.y = y
 
         self.grid_size = grid_size
         self.grid = grid
 
+        # Normal bees
         self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
                 for _ in range(n_bees)]
 
         self.mus = []
-        self.directions = []
         self.mu_scores = []
         self.mu_bins = []
         self.food_count = 0
         self.mu_counter = 0
         self.food = 0
-
 
         # how long to remember mus
         self.memory = 1000
@@ -49,7 +49,6 @@ class Hive:
             self.food += bee.load
             bee.load = 0
             self.mus.append([self.mu_counter, bee.mu])
-            self.directions.append([bee.message])
 
             if len(self.mu_bins) > 0:
                 self.assign_mu(bee)
@@ -64,14 +63,9 @@ class Hive:
             else:
                 new_mu = max(mus[-1] + (rand()-0.5)/5, 1)
                 new_mu = min(new_mu, 3)
-            
-            if len(self.directions) >= 1:
-                bee.angle = self.directions.pop
-                
-            #print cum_scores
-            #print self.mu_bins
-            #print r, new_mu
+
             bee.mu = new_mu
+
 
     def discard_mus(self, max_age):
         i = 0
