@@ -29,7 +29,7 @@ class Hive:
 
     def init_bees(self, n_bees):
         # Normal bees
-        self.bees = [Bee(x, y, (rand()*2 + 1), grid) \
+        self.bees = [Bee(self.x, self.y, (rand()*2 + 1), self.grid) \
                 for _ in range(n_bees)]
 
 
@@ -52,17 +52,16 @@ class Hive:
         if bee.x == self.x and bee.y == self.y:
             self.food += bee.load
             bee.load = 0
-            self.load_mu_from(bee)
+            self.load_settings_from(bee)
 
 
     def load_settings_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
             self.directions.append(bee.message())
-
             self.assign_settings(bee)
 
     def assign_settings(self, bee):
-        # mu settings
+        # mu settings
         if len(self.mu_bins) != 0:
             r = rand()
             cum_scores = np.cumsum(self.mu_scores)
