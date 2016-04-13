@@ -21,5 +21,5 @@ class HiveMode(Hive):
             bee.do_actions()
             self.collect(bee)
 
-    def load_mu_from(self, bee):
+    def load_settings_from(self, bee):
         pass
