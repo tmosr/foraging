@@ -78,7 +78,7 @@ class Hive:
         if len(self.directions) == 0:
             new_angle = bee.compute_angle()
         else:
-            new_angle = float(self.directions.pop)
+            new_angle = self.directions.pop()
 
         bee.angle = new_angle
 
