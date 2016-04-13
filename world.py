@@ -34,7 +34,7 @@ class World:
             f.do_action()
 
 size = 100
-n_food = 10
+n_food = 20
 n_hive = 1
 food_size = 10
 npp = 0.001
@@ -51,29 +51,26 @@ stop = 100000
 w.create_hive(n_hives, n_bees)
 w.create_food(n_food, food_size, npp, max_food)
 
-fg, ax = plt.subplots(1,3)
+fg, field = plt.subplots(1,1)
 
 for i in range(start, stop):
     w.step()
 
-    ax[0].clear()
-    ax[0].set_aspect('equal')
-    ax[0].axis([0, size, 0, size])
-    ax[0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
-            interpolation='nearest')
+    if i % 10 == 0:
+        field.clear()
+        field.set_aspect('equal')
+        field.axis([0, size, 0, size])
+        field.imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+                interpolation='nearest')
 
-    for i in range(len(w.hives)):
-        hive = w.hives[i]
-        bees = hive.bees
+        for i in range(len(w.hives)):
+            hive = w.hives[i]
+            bees = hive.bees
 
-        ax[0].plot(hive.x, hive.y, 'k.')
-        ax[0].scatter([b.x for b in bees], [b.y for b in bees], \
-                cmap = 'Paired', vmin=0, vmax=n_hives, \
-                c=[i for _ in range(len(bees))])
-    
-        ax[1+i].clear()
-        ax[1+i].hist([b.mu for b in hive.bees],normed=True, stacked=True)
-        ax[1+i].set_aspect('equal')
+            field.plot(hive.x, hive.y, 'k.')
+            field.scatter([b.x for b in bees], [b.y for b in bees], \
+                    cmap = 'Paired', vmin=0, vmax=n_hives, \
+                    c=[i for _ in range(len(bees))])
 
-    plt.draw()
-    plt.pause(0.1)
+        plt.draw()
+        plt.pause(0.1)
