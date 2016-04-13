@@ -33,14 +33,14 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 100
-n_food = 7
-food_size = 6
+size = 50
+n_food = 10
+food_size = 5
 npp = 0.01
 max_food = 1.1
 
 tot_n_bees = 50
-n_hives = 2
+n_hives = 1
 n_bees = int(tot_n_bees/n_hives)
 
 w = World(size)
@@ -66,7 +66,7 @@ for i in range(start, stop):
             hive = w.hives[j]
             bees = hive.bees
 
-            ax[0].plot(hive.x, hive.y, 'ys')
+            ax[0].plot(hive.x, hive.y, 'rd')
             ax[0].scatter([b.x for b in bees], [b.y for b in bees], \
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
                     c=[j for _ in range(len(bees))])

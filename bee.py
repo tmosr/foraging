@@ -55,13 +55,7 @@ class Bee:
      
     def move(self):
         pos = self.look_around()
-        if self.cd <= self.ad:
-            self.x = (self.x+cos(self.angle)) % self.size
-            self.y = (self.y + sin(self.angle)) % self.size
-            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
-            pos = self.look_around()
         
-        pos = self.look_around()
         if len(pos) >=1:
             shuffle(pos)
             self.x = pos[0] % self.size
@@ -74,12 +68,20 @@ class Bee:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
+         
+        else:
+            self.x = (self.x + cos(self.angle)) % self.size
+            self.y = (self.y + sin(self.angle)) % self.size
+            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
+           
 
     def collect(self):
         if self.grid[self.x][self.y] >=1:
             self.grid[self.x][self.y] -= 1
             self.load += 1
             if self.load >= self.capacity:
-                self.message = atan2(self.x_hive+self.x,self.y_hive+self.y)
+                self.message = atan2(self.x-self.x_hive,self.y-self.y_hive) + pi
+                self.cd = 0
+                self.ad = self.compute_a()
                 self.x = self.x_hive
                 self.y = self.y_hive
