@@ -21,11 +21,6 @@ class World:
         self.hives = [Hive(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid) for _ in range(n_hives)]
 
-    def create_hive_mode(self, n_hives, n_bees, vs, vf):
-        # create hives x,y, n_bees, size, grid
-        self.hives = [HiveMode(int(rand()*self.size), int(rand()*self.size),\
-                n_bees, size, self.grid, vs, vf) for _ in range(n_hives)]
-
     def create_food(self, n_food, food_size, npp, max_food):
         # create food x,y,n,size
         self.food = [Food(int(rand()*self.size), \
@@ -55,8 +50,7 @@ w = World(size)
 start = 0
 stop = 100000
 
-#w.create_hive(n_hives, n_bees)
-w.create_hive_mode(n_hives, n_bees, vs, vf)
+w.create_hive(n_hives, n_bees)
 w.create_food(n_food, food_size, npp, max_food)
 
 fg, ax = plt.subplots(1,n_hives + 1)
