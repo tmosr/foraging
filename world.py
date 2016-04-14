@@ -54,17 +54,17 @@ class World:
                     x_dist = size-(f1.x-f2.x)
                 else:
                     x_dist = f1.x - f2.x
-        
+
                 if f1.y - f2.y > size/2:
                     y_dist = size-(f1.y - f2.y)
                 else:
                     y_dist = f1.y - f2.y
-                    
+
                 dist_food.append(hypot(x_dist, y_dist))
-        
+
         afd = np.mean(dist_food)
         return afd
-                
+
 size = 120
 n_food = 20
 food_size = 8
@@ -84,7 +84,9 @@ stop = 100000
 
 w.create_hive_intelligent(int(n_hives/2), n_bees)
 w.create_hive_stupid(int(n_hives/2), n_bees)
+
 l_labels = ['intelligent', 'stupid']
+
 w.create_food(n_food, food_size, npp, max_food)
 av_food_dist = w.av_food_dist()
 
@@ -94,47 +96,65 @@ cnorm = cl.Normalize(vmin=0, vmax=n_hives)
 scmap = cm.ScalarMappable(norm=cnorm, cmap=cp)
 
 # plot stuff
-fg, ax = plt.subplots(1,n_hives + 2)
-ax[1].clear()
+fg, ax = plt.subplots(2,3)
+ax[0][1].clear()
 
 t = range(start, stop)
-ax[1].plot(t, [2-1/(log(av_food_dist/1)**2) for _ in t],'-',color='k')
+ax[0][1].set_title('AVG mu')
+ax[0][1].plot(t, [2-1/(log(av_food_dist/1)**2) for _ in t],'-',color='k')
 
 for i in range(start, stop):
     w.step()
 
     if i % 10 == 0:
         hdls = []
-        ax[0].clear()
-        ax[0].set_aspect('equal')
-        ax[0].axis([0, size, 0, size])
-        ax[0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+        ax[0][0].clear()
+        ax[0][0].set_title('Watch the bees!')
+        ax[0][0].set_aspect('equal')
+        ax[0][0].axis([0, size, 0, size])
+        ax[0][0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
                 interpolation='nearest')
 
         for j in range(len(w.hives)):
             hive = w.hives[j]
             bees = hive.bees
 
-            ax[0].plot(hive.x, hive.y, 'rd')
-            ax[0].scatter([b.x for b in bees], [b.y for b in bees], \
+            ax[0][0].plot(hive.x, hive.y, 'rd')
+            ax[0][0].scatter([b.x for b in bees], [b.y for b in bees], \
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
                     c=[j for _ in range(len(bees))])
 
             mus = [b.mu for b in hive.bees]
             cval = scmap.to_rgba(j)
-            h, = ax[1].plot(i, np.mean(mus), '.', \
+            h, = ax[0][1].plot(i, np.mean(mus), '.', \
                     color=cval, label = l_labels[j])
             hdls.append(h)
-            ax[1].set_aspect((i+1-start)/2.)
-            ax[1].axis([start, i+1, 1, 3])
+            ax[0][1].set_aspect((i+1-start)/2.)
+            ax[0][1].axis([start, i+1, 1, 3])
 
-            ax[2+j].clear()
-            n, bins, patches = ax[2+j].hist(mus,normed=True, color=cval)
-            ax[2+j].axis([1, 3, min(n), max(n)])
-            ax[2+j].set_aspect(2.\
+
+            if len(hive.travel_dists) > 1:
+                # dists
+                dists = [d[0] for d in hive.travel_dists]
+                # mus
+                ms = [d[1] for d in hive.travel_dists]
+
+                ax[j][2].clear()
+                ax[j][2].set_title('Distance vs. mu')
+                ax[j][2].axis([min(ms), max(ms), min(dists), max(dists)])
+                ax[j][2].set_aspect(float(max(ms) - min(ms))/\
+                        float(max(dists)-min(dists)))
+                ax[j][2].scatter(ms, dists, cmap = 'Paired', c=cval)
+
+            ax[1][j].clear()
+            ax[1][j].set_title('mu histogramm')
+            n, bins, patches = ax[1][j].hist(mus,normed=True, color=cval)
+            ax[1][j].axis([1, 3, min(n), max(n)])
+            ax[1][j].set_aspect(2.\
                     /float(max(n)-min(n)))
-        plt.legend(handles = hdls, loc = 3, bbox_to_anchor=(0., 1.02, 1., .102), mode = 'expand')
+
+        plt.figlegend(hdls, l_labels, 'upper right')
         plt.draw()
-        plt.pause(0.1)
+        plt.pause(0.0001)
 
 

@@ -109,7 +109,7 @@ for i in range(start, stop):
                     c=[j for _ in range(len(bees))])
 
             mus = [b.mu for b in hive.bees]
-            dists = hive.travel_dists
+            dists = [d[0] for d in hive.travel_dists]
 
             cval = scmap.to_rgba(j)
             #h, = ax[0][0].plot(i, np.mean(mus), '.', \
