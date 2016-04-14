@@ -50,7 +50,6 @@ class World:
         for f in self.food:
             for x in range(size):
                 for y in range(size):
-                    for f in food_dist:
                         if f.grid[f] >= 1:
                             food_dist_x.append(x)
                             food_dist_y.append(y)
