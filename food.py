@@ -41,5 +41,3 @@ class Food:
 
         exceed = self.grid[x_min:x_max,y_min:y_max] > self.max_food
         self.grid[x_min:x_max,y_min:y_max][exceed] = self.max_food
-
-

@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as cl
 import matplotlib.cm as cm
+from math import log
 
 class World:
     def __init__(self, size):
@@ -42,6 +43,21 @@ class World:
             h.do_action()
         for f in self.food:
             f.do_action()
+    
+    def av_food_dist(self):
+        food_dist_x=[]
+        food_dist_y=[]
+        for f in self.food:
+            for x in range(size):
+                for y in range(size):
+                    for f in food_dist:
+                        if f.grid[f] >= 1:
+                            food_dist_x.append(x)
+                            food_dist_y.append(y)
+        av_x= np.mean(food_dist_x)
+        av_y= np.mean(food_dist_y)
+        afd = hypot(av_x,av_y)
+        return afd
 
 size = 50
 n_food = 10
@@ -60,10 +76,12 @@ w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_intelligent(n_hives/2, n_bees)
-w.create_hive_stupid(n_hives/2, n_bees)
+w.create_hive_intelligent(int(n_hives/2), n_bees)
+w.create_hive_stupid(int(n_hives/2), n_bees)
 
 w.create_food(n_food, food_size, npp, max_food)
+
+av_food_dist = w.av_food_dist()
 
 # color stuff
 cp = plt.get_cmap('Paired')
@@ -73,6 +91,9 @@ scmap = cm.ScalarMappable(norm=cnorm, cmap=cp)
 # plot stuff
 fg, ax = plt.subplots(1,n_hives + 2)
 ax[1].clear()
+
+t = range(start, stop)
+ax[1].plot(t, [2-1/(log(av_food_dist/1)**2) for _ in t],'-',color='k')
 
 for i in range(start, stop):
     w.step()
