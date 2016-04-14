@@ -45,19 +45,26 @@ class World:
             f.do_action()
 
     def av_food_dist(self):
-        food_dist_x=[]
-        food_dist_y=[]
-        for f in self.food:
-            for x in range(size):
-                for y in range(size):
-                        if f.grid[f] >= 1:
-                            food_dist_x.append(x)
-                            food_dist_y.append(y)
-        av_x= np.mean(food_dist_x)
-        av_y= np.mean(food_dist_y)
-        afd = hypot(av_x,av_y)
+        dist_food =[]
+        for i in range(len(self.food)-1):
+            f1 = self.food[i]
+            for j in range(len(self.food)-1, i, -1):
+                f2 = self.food[j]
+                if f1.x - f2.x > size/2:
+                    x_dist = size-(f1.x-f2.x)
+                else:
+                    x_dist = f1.x - f2.x
+        
+                if f1.y - f2.y > size/2:
+                    y_dist = size-(f1.y - f2.y)
+                else:
+                    y_dist = f1.y - f2.y
+                    
+                dist_food.append(hypot(x_dist, y_dist))
+        
+        afd = np.mean(dist_food)
         return afd
-
+                
 size = 120
 n_food = 20
 food_size = 8

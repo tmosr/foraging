@@ -88,7 +88,10 @@ class BeeSpeed:
 
         pos = []
 
-        for d in range(int(dist)):
+        dist = min(dist, sqrt(2)*dist)
+
+        d = 0
+        while d < int(dist) and (len(pos) == 0 or d > int(dist/2)):
             x = round(self.x + d*cos(theta)) % self.size
             y = round(self.y + d*sin(theta)) % self.size
             dsx = round(x - v*cos(theta)) % self.size
@@ -101,7 +104,7 @@ class BeeSpeed:
                     p1 = (dx, dy)
                     p2 = (x,y)
                     pos.append([p1, self.periodic_dist(p1,p2)])
-
+            d += 1
         return sorted(pos, key=lambda d: d[1])
 
     def periodic_dist(self, p1, p2):

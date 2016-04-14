@@ -23,6 +23,8 @@ class Hive:
         # how long to remember mus
         self.memory = 1000
 
+        self.travel_dists = []
+
         self.init_bees(n_bees)
 
     def init_bees(self, n_bees):
