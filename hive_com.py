@@ -23,8 +23,7 @@ class HiveCom(Hive):
         bee.angle = new_angle
 
     def load_settings_from(self, bee):
-            self.mus.append([self.mu_counter, bee.mu])
             self.directions.append(bee.message)
-            self.assign_settings(bee)
+            Hive.load_settings_from(self, bee)
 
 

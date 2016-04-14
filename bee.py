@@ -28,6 +28,8 @@ class Bee:
         self.message = []
         self.travel_dist = 0
 
+        self.dists = []
+
     def compute_a(self):
         r_ok = False
         while not r_ok:
@@ -53,10 +55,10 @@ class Bee:
                         if self.grid[p] >= 1:
                             pos.append((x,y))
         return pos
-     
+
     def move(self):
         pos = self.look_around()
-        
+
         if len(pos) >=1:
             shuffle(pos)
             self.travel_dist += hypot(self.x-pos[0],self.y-pos[1])
@@ -64,24 +66,25 @@ class Bee:
             self.y = pos[1] % self.size
             self.cd = 0
             self.ad = self.compute_a()
+            self.dists.append(self.ad)
             self.angle = self.compute_angle()
-        
+
         elif self.cd >= self.ad:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
-            
+
             self.x = (self.x + cos(self.angle)) % self.size
             self.y = (self.y + sin(self.angle)) % self.size
-            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2) 
+            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
             self.travel_dist += sqrt(cos(self.angle)**2+sin(self.angle)**2)
-         
+
         else:
             self.x = (self.x + cos(self.angle)) % self.size
             self.y = (self.y + sin(self.angle)) % self.size
             self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2)
             self.travel_dist += sqrt(cos(self.angle)**2+sin(self.angle)**2)
-           
+
     def collect(self):
         if self.grid[self.x][self.y] >=1:
             self.grid[self.x][self.y] -= 1

@@ -12,11 +12,3 @@ class HiveSpeed(Hive):
         # Mode bees
         self.bees = [BeeSpeed(self.x, self.y, (rand()*2 + 1), self.grid) \
                 for _ in range(n_bees)]
-
-    def do_action(self):
-        for bee in self.bees:
-            bee.do_actions()
-            self.collect(bee)
-
-    def load_settings_from(self, bee):
-        pass

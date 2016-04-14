@@ -55,6 +55,10 @@ class Hive:
 
     def load_settings_from(self, bee):
             self.mus.append([self.mu_counter, bee.mu])
+            self.travel_dists.append(bee.travel_dist)
+            bee.travel_dist = 0
+            bee.dists = []
+
             self.assign_settings(bee)
 
     def assign_settings(self, bee):

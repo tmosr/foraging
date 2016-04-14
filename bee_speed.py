@@ -24,7 +24,7 @@ class BeeSpeed:
         self.mu = mu
 
         self.dists = []
-        self.dist_memory = 1000
+        self.travel_dist = 0
 
     def compute_a(self):
         r_ok = False
@@ -64,16 +64,56 @@ class BeeSpeed:
         dx = dist*cos(theta)
         dy = dist*sin(theta)
 
-        pos = self.look_around()
+        food_pos = self.food_in_sight(dx, dy)
+        if len(food_pos) > 0:
+            x = food_pos[0][0][0]
+            y = food_pos[0][0][1]
 
-        self.x = round(self.x + dx) % self.size
-        self.y = round(self.y + dy) % self.size
+            d = food_pos[0][1]
 
-        # append mean dist
-        self.dists.append(sqrt(dx**2 + dy**2))
+        else:
+            self.x = round(self.x + dx) % self.size
+            self.y = round(self.y + dy) % self.size
+            # append mean dist
+            d = sqrt(dx**2 + dy**2)
 
-        if len(self.dists) > self.dist_memory:
-            self.dists.pop(0)
+        self.dists.append(d)
+        self.travel_dist += d
+
+    def food_in_sight(self, theta, dist):
+        v = self.rv
+
+        x = self.x + v*cos(theta)
+        y = self.y + v*sin(theta)
+
+        pos = []
+
+        for d in range(int(dist)):
+            x = round(self.x + d*cos(theta)) % self.size
+            y = round(self.y + d*sin(theta)) % self.size
+            dsx = round(x - v*cos(theta)) % self.size
+            dsy = round(y - v*sin(theta)) % self.size
+            for t in range(2*v):
+                dx = (round(t*cos(theta - pi/2)) + x) % self.size
+                dy = (round(t*sin(theta - pi/2)) + y) % self.size
+
+                if self.grid[dx][dy] > 1:
+                    p1 = (dx, dy)
+                    p2 = (x,y)
+                    pos.append([p1, self.periodic_dist(p1,p2)])
+
+        return sorted(pos, key=lambda d: d[1])
+
+    def periodic_dist(self, p1, p2):
+        dx = p1[0]-p2[0]
+        if dx > self.size/2:
+            dx = self.size - dx
+
+        dy = p1[1]-p2[1]
+        if dy > self.size/2:
+            dy = self.size - dy
+
+        return sqrt(dy**2 + dx**2)
 
     def collect(self):
         if self.grid[self.x][self.y] >=1:
