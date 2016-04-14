@@ -3,11 +3,14 @@
 # import project classes
 from food import *
 from hive_mode import *
+from hive_speed import *
 
 # import other classes
 from random import random as rand
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as cl
+import matplotlib.cm as cm
 
 class World:
     def __init__(self, size):
@@ -16,10 +19,16 @@ class World:
         self.hives = []
         self.food = []
 
-    def create_hive_mode(self, n_hives, n_bees, vs, vf):
+    def create_hive_mode(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
-        self.hives = [HiveMode(int(rand()*self.size), int(rand()*self.size),\
-                n_bees, size, self.grid, vs, vf) for _ in range(n_hives)]
+        for _ in range(n_hives):
+            self.hives.append(HiveMode(int(rand()*self.size), int(rand()*self.size),\
+                n_bees, size, self.grid))
+
+    def create_hive_speed(self, n_hives, n_bees):
+        for _ in range(n_hives):
+            self.hives.append(HiveSpeed(int(rand()*self.size), int(rand()*self.size),\
+                n_bees, size, self.grid))
 
     def create_food(self, n_food, food_size, npp, max_food):
         # create food x,y,n,size
@@ -39,47 +48,76 @@ food_size = 6
 npp = 0.01
 max_food = 1.1
 
-vs = 10
-vf = 1
-
-tot_n_bees = 50
-n_hives = 1
+tot_n_bees = 100
+n_hives = 2
 n_bees = int(tot_n_bees/n_hives)
 
 w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_mode(n_hives, n_bees, vs, vf)
+w.create_hive_mode(int(n_hives)/2, n_bees)
+w.create_hive_speed(int(n_hives)/2, n_bees) # speedy levy walk (blind)
 w.create_food(n_food, food_size, npp, max_food)
 
-fg, ax = plt.subplots(1,n_hives + 1)
+l_labels = ['Moding bees', 'Levy Bees']
+
+# color stuff
+cp = plt.get_cmap('Paired')
+cnorm = cl.Normalize(vmin=0, vmax=n_hives)
+scmap = cm.ScalarMappable(norm=cnorm, cmap=cp)
+
+# plot stuff
+fg, ax = plt.subplots(3,n_hives)
+ax[0][1].clear()
+ax[0][1].set_title('Mean of mu')
 
 for i in range(start, stop):
     w.step()
 
     if i % 1 == 0:
-        ax[0].clear()
-        ax[0].set_aspect('equal')
-        ax[0].axis([0, size, 0, size])
-        ax[0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+        hdls = []
+        ax[0][0].clear()
+        ax[0][0].set_title('Watch the bees!')
+        ax[0][0].set_aspect('equal')
+        ax[0][0].axis([0, size, 0, size])
+        ax[0][0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
                 interpolation='nearest')
 
         for j in range(len(w.hives)):
             hive = w.hives[j]
             bees = hive.bees
 
-            ax[0].plot(hive.x, hive.y, 'ys')
-            ax[0].scatter([b.x for b in bees], [b.y for b in bees], \
+            ax[0][0].plot(hive.x, hive.y, 'ys')
+            ax[0][0].scatter([b.x for b in bees], [b.y for b in bees], \
                     cmap = 'Paired', vmin=0, vmax=n_hives, \
                     c=[j for _ in range(len(bees))])
 
-            #ax[1+j].clear()
-            #n, bins, patches = ax[1+j].hist([b.mu for b in hive.bees],normed=True)
-            #ax[1+j].axis([1, 3, min(n), max(n)])
-            #ax[1+j].set_aspect(2.\
-                    #/float(max(n)-min(n)))
+            mus = [b.mu for b in hive.bees]
+            dists = [np.mean(b.dists) for b in hive.bees]
 
+            cval = scmap.to_rgba(j)
+            h, = ax[0][1].plot(i, np.mean(mus), '.', \
+                    color=cval, label = l_labels[j])
+            hdls.append(h)
+            ax[0][1].set_aspect((i+1-start)/100.)
+            ax[0][1].axis([start, i+1, 0, 100])
+
+            ax[1][j].clear()
+            ax[1][j].set_title('mu histogram')
+            n, bins, patches = ax[1][j].hist(mus,normed=True, color=cval)
+            ax[1][j].axis([min(bins), max(bins), min(n), max(n)])
+            ax[1][j].set_aspect(float(max(bins)-min(bins))\
+                    /float(max(n)-min(n)))
+
+            ax[2][j].clear()
+            ax[2][j].set_title('dist histogram')
+            n, bins, patches = ax[2][j].hist(dists,normed=True, color=cval)
+            ax[2][j].axis([min(bins), max(bins), min(n), max(n)])
+            ax[2][j].set_aspect(float(max(bins)-min(bins))\
+                    /float(max(n)-min(n)))
+
+        plt.legend(handles = hdls, loc = 3, bbox_to_anchor=(0., 1.02, 1., .102), mode = 'expand')
         plt.draw()
         plt.pause(0.1)
 

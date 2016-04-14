@@ -5,7 +5,7 @@ from random import *
 import numpy as np
 from math import *
 
-class Bee:
+class BeeSpeed:
     def __init__(self, x, y, mu, grid):
         self.x = x
         self.y = y
@@ -22,6 +22,9 @@ class Bee:
         self.load = 0
         self.rv = 3
         self.mu = mu
+
+        self.dists = []
+        self.dist_memory = 1000
 
     def compute_a(self):
         r_ok = False
@@ -63,8 +66,14 @@ class Bee:
 
         pos = self.look_around()
 
-        self.x = int((self.x + dx) % self.size)
-        self.y = int((self.y + dy) % self.size)
+        self.x = round(self.x + dx) % self.size
+        self.y = round(self.y + dy) % self.size
+
+        # append mean dist
+        self.dists.append(sqrt(dx**2 + dy**2))
+
+        if len(self.dists) > self.dist_memory:
+            self.dists.pop(0)
 
     def collect(self):
         if self.grid[self.x][self.y] >=1:
