@@ -43,25 +43,26 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 50
-n_food = 10
-food_size = 5
+size = 120
+n_food = 20
+food_size = 8
 npp = 0.01
 max_food = 1.1
 
 vs = 10
 vf = 1
 
-tot_n_bees = 100
+tot_n_bees = 120
 n_hives = 2
-n_bees = int(tot_n_bees/(n_hives*2))
+n_bees = int(tot_n_bees/(n_hives))
 
 w = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_intelligent(n_hives/2, n_bees)
-w.create_hive_stupid(n_hives/2, n_bees)
+w.create_hive_intelligent(int(n_hives/2), n_bees)
+w.create_hive_stupid(int(n_hives/2), n_bees)
+l_labels = ['intelligent', 'stupid']
 
 w.create_food(n_food, food_size, npp, max_food)
 
@@ -78,6 +79,7 @@ for i in range(start, stop):
     w.step()
 
     if i % 10 == 0:
+        hdls = []
         ax[0].clear()
         ax[0].set_aspect('equal')
         ax[0].axis([0, size, 0, size])
@@ -95,7 +97,9 @@ for i in range(start, stop):
 
             mus = [b.mu for b in hive.bees]
             cval = scmap.to_rgba(j)
-            ax[1].plot(i, np.mean(mus), '.', color=cval)
+            h, = ax[1].plot(i, np.mean(mus), '.', \
+                    color=cval, label = l_labels[j])
+            hdls.append(h)
             ax[1].set_aspect((i+1-start)/2.)
             ax[1].axis([start, i+1, 1, 3])
 
@@ -104,7 +108,7 @@ for i in range(start, stop):
             ax[2+j].axis([1, 3, min(n), max(n)])
             ax[2+j].set_aspect(2.\
                     /float(max(n)-min(n)))
-
+        plt.legend(handles = hdls, loc = 3, bbox_to_anchor=(0., 1.02, 1., .102), mode = 'expand')
         plt.draw()
         plt.pause(0.1)
 
