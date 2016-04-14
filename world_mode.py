@@ -21,7 +21,7 @@ class World:
 
     def create_hive_mode(self, n_hives, n_bees):
         # create hives x,y, n_bees, size, grid
-        for _ in range(n_hives):
+        for _ in range(int(n_hives)):
             self.hives.append(HiveMode(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid))
 
@@ -31,7 +31,7 @@ class World:
                 n_bees, size, self.grid))
 
     def create_hive(self, n_hives, n_bees):
-        for _ in range(n_hives):
+        for _ in range(int(n_hives)):
             self.hives.append(Hive(int(rand()*self.size), int(rand()*self.size),\
                 n_bees, size, self.grid))
 
