@@ -57,13 +57,15 @@ tot_n_bees = 100
 n_hives = 2
 n_bees = int(tot_n_bees/n_hives)
 
-w = World(size)
+w1 = World(size)
+w2 = World(size)
 start = 0
 stop = 100000
 
-w.create_hive_mode(int(n_hives)/2, n_bees)
-w.create_hive_speed(int(n_hives)/2, n_bees) # speedy levy walk (blind)
-w.create_food(n_food, food_size, npp, max_food)
+w1.create_hive_mode(int(n_hives)/2, n_bees)
+w2.create_hive(int(n_hives)/2, n_bees) # speedy levy walk (blind)
+w1.create_food(n_food, food_size, npp, max_food)
+w2.create_food(n_food, food_size, npp, max_food)
 
 l_labels = ['Moding bees', 'Levy Bees']
 
@@ -74,11 +76,12 @@ scmap = cm.ScalarMappable(norm=cnorm, cmap=cp)
 
 # plot stuff
 fg, ax = plt.subplots(3,n_hives)
-ax[0][1].clear()
-ax[0][1].set_title('Mean of mu')
+#ax[0][1].clear()
+#ax[0][1].set_title('Mean of mu')
 
 for i in range(start, stop):
-    w.step()
+    w1.step()
+    w2.step()
 
     if i % 10 == 0:
         hdls = []
@@ -86,11 +89,18 @@ for i in range(start, stop):
         ax[0][0].set_title('Watch the modeing bees!')
         ax[0][0].set_aspect('equal')
         ax[0][0].axis([0, size, 0, size])
-        ax[0][0].imshow(w.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+        ax[0][0].imshow(w1.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
                 interpolation='nearest')
 
-        for j in range(len(w.hives)):
-            hive = w.hives[0]
+        ax[0][1].clear()
+        ax[0][1].set_title('Watch the levy bees!')
+        ax[0][1].set_aspect('equal')
+        ax[0][1].axis([0, size, 0, size])
+        ax[0][1].imshow(w2.grid.T, cmap='Greens', vmin=0, vmax=max_food, \
+                interpolation='nearest')
+        hives = [w1.hives[0], w2.hives[0]]
+        for j in range(2):
+            hive = hives[j]
             bees = hive.bees
 
             ax[0][j].plot(hive.x, hive.y, 'ys')
@@ -102,12 +112,12 @@ for i in range(start, stop):
             dists = hive.travel_dists
 
             cval = scmap.to_rgba(j)
-            h, = ax[0][1].plot(i, np.mean(mus), '.', \
-                    color=cval, label = l_labels[j])
+            #h, = ax[0][0].plot(i, np.mean(mus), '.', \
+                    #color=cval, label = l_labels[j])
 
-            hdls.append(h)
-            ax[0][1].set_aspect((i+1-start)/100.)
-            ax[0][1].axis([start, i+1, 0, 100])
+            #hdls.append(h)
+            #ax[0][1].set_aspect((i+1-start)/100.)
+            #ax[0][1].axis([start, i+1, 0, 100])
 
             ax[1][j].clear()
             ax[1][j].set_title('mu histogram')

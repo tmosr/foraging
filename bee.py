@@ -85,7 +85,6 @@ class Bee:
             self.load += 1
             if self.load >= self.capacity:
                 self.message = atan2(self.x-self.x_hive,self.y-self.y_hive) + pi
-                self.travel_dist = 0
                 self.cd = 0
                 self.ad = self.compute_a()
                 self.x = self.x_hive
