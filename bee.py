@@ -70,11 +70,6 @@ class Bee:
             self.cd = 0
             self.ad = self.compute_a()
             self.angle = self.compute_angle()
-            
-            self.x = (self.x + cos(self.angle)) % self.size
-            self.y = (self.y + sin(self.angle)) % self.size
-            self.cd += sqrt(cos(self.angle)**2+sin(self.angle)**2) 
-            self.travel_dist += sqrt(cos(self.angle)**2+sin(self.angle)**2)
          
         else:
             self.x = (self.x + cos(self.angle)) % self.size
@@ -88,6 +83,7 @@ class Bee:
             self.load += 1
             if self.load >= self.capacity:
                 self.message = atan2(self.x-self.x_hive,self.y-self.y_hive) + pi
+                self.travel_dist = 0
                 self.cd = 0
                 self.ad = self.compute_a()
                 self.x = self.x_hive
