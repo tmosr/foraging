@@ -11,5 +11,5 @@ class HiveMode(Hive):
 
     def init_bees(self, n_bees):
         # Mode bees
-        self.bees = [BeeMode(self.x, self.y, rand()*100, self.grid) \
+        self.bees = [BeeMode(self.x, self.y, rand()*10, self.grid) \
                 for _ in range(n_bees)]

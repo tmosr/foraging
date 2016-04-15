@@ -21,7 +21,7 @@ class Hive:
         self.food = 0
 
         # how long to remember mus
-        self.memory = 1000
+        self.memory = 10000
 
         self.travel_dists = []
 

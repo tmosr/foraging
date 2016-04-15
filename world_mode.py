@@ -47,9 +47,9 @@ class World:
         for f in self.food:
             f.do_action()
 
-size = 100
-n_food = 7
-food_size = 6
+size = 60
+n_food = 3
+food_size = 2
 npp = 0.01
 max_food = 1.1
 

@@ -65,16 +65,16 @@ class World:
         afd = np.mean(dist_food)
         return afd
 
-size = 120
-n_food = 20
-food_size = 8
+size = 50
+n_food = 3
+food_size = 2
 npp = 0.01
 max_food = 1.1
 
 vs = 10
 vf = 1
 
-tot_n_bees = 120
+tot_n_bees = 60
 n_hives = 2
 n_bees = int(tot_n_bees/(n_hives))
 
@@ -106,7 +106,7 @@ ax[0][1].plot(t, [2-1/(log(av_food_dist/1)**2) for _ in t],'-',color='k')
 for i in range(start, stop):
     w.step()
 
-    if i % 10 == 0:
+    if i % 100 == 0:
         hdls = []
         ax[0][0].clear()
         ax[0][0].set_title('Watch the bees!')

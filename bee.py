@@ -18,7 +18,7 @@ class Bee:
         self.size = self.grid.shape[0]
 
         self.min_dist = 1
-        self.capacity = 10
+        self.capacity = 5
         self.load = 0
         self.rv = 1
         self.mu = mu
